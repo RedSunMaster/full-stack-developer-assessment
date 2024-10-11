@@ -1,47 +1,42 @@
 import { v4 as uuidv4 } from 'uuid';
+import School from '../types/school.types';
 
-interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
-}
+let schools: School[] = [];
 
-let todos: Todo[] = [];
-
-export const todoService = {
-  findAll: async (): Promise<Todo[]> => {
-    return todos;
+export const schoolService = {
+  findAll: async (): Promise<School[]> => {
+    return schools;
   },
 
-  find: async (id: string): Promise<Todo | undefined> => {
-    return todos.find((t) => t.id === id);
+  find: async (id: string): Promise<School | undefined> => {
+    return schools.find((t) => t.id === id);
   },
 
-  create: async (title: string): Promise<Todo> => {
+  create: async (title: string): Promise<School> => {
     if (!title || typeof title !== 'string' || title.trim() === '') {
       throw new Error('Title is required and must be a non-empty string');
     }
 
-    const existingTodo = todos.find(
+    const existingTodo = schools.find(
       (t) => t.title.toLowerCase() === title.trim().toLowerCase()
     );
     if (existingTodo) {
-      throw new Error('A todo with this title already exists');
+      throw new Error('A school with this title already exists');
     }
 
-    const newTodo: Todo = {
+    const newTodo: School = {
       id: uuidv4(),
       title: title.trim(),
       completed: false,
     };
-    todos.push(newTodo);
+    schools.push(newTodo);
     return newTodo;
   },
 
-  update: async (id: string, updates: Partial<Todo>): Promise<Todo> => {
-    const todoIndex = todos.findIndex((t) => t.id === id);
+  update: async (id: string, updates: Partial<School>): Promise<School> => {
+    const todoIndex = schools.findIndex((t) => t.id === id);
     if (todoIndex === -1) {
-      throw new Error('Todo not found');
+      throw new Error('School not found');
     }
 
     const { title, completed } = updates;
@@ -52,28 +47,28 @@ export const todoService = {
       throw new Error('Title must be a non-empty string');
     }
 
-    const updatedTodo = { ...todos[todoIndex] };
+    const updatedTodo = { ...schools[todoIndex] };
     if (title !== undefined) {
-      const existingTodo = todos.find(
+      const existingTodo = schools.find(
         (t) =>
           t.id !== id && t.title.toLowerCase() === title.trim().toLowerCase()
       );
       if (existingTodo) {
-        throw new Error('A todo with this title already exists');
+        throw new Error('A school with this title already exists');
       }
       updatedTodo.title = title.trim();
     }
     if (completed !== undefined) updatedTodo.completed = Boolean(completed);
 
-    todos[todoIndex] = updatedTodo;
+    schools[todoIndex] = updatedTodo;
     return updatedTodo;
   },
 
   remove: async (id: string): Promise<void> => {
-    const todoIndex = todos.findIndex((t) => t.id === id);
+    const todoIndex = schools.findIndex((t) => t.id === id);
     if (todoIndex === -1) {
-      throw new Error('Todo not found');
+      throw new Error('School not found');
     }
-    todos.splice(todoIndex, 1);
+    schools.splice(todoIndex, 1);
   },
 };

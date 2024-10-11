@@ -7,6 +7,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["*.ts", "routes/**/*.ts", "services/**/*.ts"],
+  "include": ["*.ts", "routes/**/*.ts", "services/**/*.ts", "server.js"],
   "exclude": ["node_modules", "dist"]
 }
