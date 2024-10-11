@@ -16,7 +16,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 });
 
 // Use schooldocs routes
-require("./routes/schooldocs.routes")(app);
+require("./routes/schoolRecords.routes")(app);
 
 
 app.listen(PORT, () => {
