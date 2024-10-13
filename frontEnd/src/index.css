@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+.title {
+  text-align: center;
+}
+
 .Navbar {
   background-color: aqua;
 }

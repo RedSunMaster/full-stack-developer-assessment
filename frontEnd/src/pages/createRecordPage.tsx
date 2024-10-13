@@ -6,7 +6,10 @@ export const CreateRecordPage = () => {
 
     return (
         <>
-        <Navbar/>        
+        <Navbar/>
+
+        
+
         </>
     )
 }

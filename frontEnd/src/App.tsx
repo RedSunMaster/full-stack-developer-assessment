@@ -25,9 +25,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}>
             </Route>
-            <Route path="/records" element={<CreateRecordPage />}>
+            <Route path="/records" element={<ViewRecordsPage />}>
             </Route>
-            <Route path="/create" element={<ViewRecordsPage />}>
+            <Route path="/create" element={<CreateRecordPage />}>
             </Route>
           </Routes>
         </ThemeProvider>
