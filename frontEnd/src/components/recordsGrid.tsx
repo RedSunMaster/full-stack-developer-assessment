@@ -6,7 +6,7 @@ import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentTe
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
 
@@ -14,24 +14,22 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
     const [schoolRecords, setSchoolRecords] = useState<SchoolRecord[]>([]);
     const [selectedEditRecord, setSelectedEditRecord] = useState<SchoolRecord | null>(null);
     const [selectedDeleteRecord, setSelectedDeleteRecord] = useState<SchoolRecord | null>(null);
-
     const [completed, setCompleted] = useState(false);
     const [newTitle, setNewTitle] = useState('');  
-
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
+
 
     const handleClickOpenEdit = (record: SchoolRecord) => {
       setSelectedEditRecord(record);
       setOpenEdit(true);
     };
-  
+
     const handleCloseEdit = () => {
       setOpenEdit(false);
       setSelectedEditRecord(null);
     };
 
-      
     const handleClickOpenDelete = (record: SchoolRecord) => {
       setSelectedDeleteRecord(record);
       setOpenDelete(true);
@@ -42,7 +40,29 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
       setSelectedDeleteRecord(null);
     };
 
+    //Update records on load
+    useEffect(() => {
+      fetchRecords();
+    }, []);
 
+
+    //Updated editable fields whenever a new record is chosen to edit
+    useEffect(() => {
+      if (selectedEditRecord){
+        setCompleted(selectedEditRecord.completed)
+        setNewTitle(selectedEditRecord.title)
+      } else {
+        setCompleted(false)
+        setNewTitle('')
+      }
+    }, [selectedEditRecord]);
+
+    useImperativeHandle(ref, () => ({
+      fetchRecords
+    }));
+
+
+    //Fetch all the records from the API and format completed to be a boolean
     const fetchRecords = () => {
       fetch('http://localhost:7777/api/get-schoolRecords')
         .then(response => response.json())
@@ -63,27 +83,13 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
         });
     };
     
-  
-    useEffect(() => {
-      fetchRecords();
-    }, []);
-
-
-    useEffect(() => {
-      if (selectedEditRecord){
-        setCompleted(selectedEditRecord.completed)
-        setNewTitle(selectedEditRecord.title)
-      } else {
-        setCompleted(false)
-        setNewTitle('')
-      }
-    }, [selectedEditRecord]);
-
-    useImperativeHandle(ref, () => ({
-      fetchRecords
-    }));
-
     
+    //Call API with PATCH method to the correct route, and with the appropritate JSON body
+    //in the form
+    //  {
+    //    "title": ""
+    //    "completed": false
+    //  }
     const editRecordInDatabase = async (formJson : any, id: string) => {
       try {
         const response = await fetch(`http://localhost:7777/api/update-schoolRecord/${id}`, {
@@ -110,7 +116,7 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
       }
     }
 
-        
+    //Call API with DELETE method to the correct route with the record id in the url
     const deleteRecordInDatabase = async (id: string) => {
       try {
         const response = await fetch(`http://localhost:7777/api/delete-schoolRecord/${id}`, {
@@ -125,11 +131,9 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
         if (!response.ok) {
           const errorData = await response.json();
           toast.error(errorData['error']);
-
           return;
         }
           toast.success('Record Deleted!');
-
           fetchRecords()
       } catch (error) {
         toast.error('An unexpected error occurred');
@@ -162,7 +166,7 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
 
 
 
-  
+    //Setup the columns for the data grid, adding edit and delete buttons appropriately
     const columns: GridColDef[] = [
       { field: 'id', headerName: 'ID', flex: 1 },
       { field: 'title', headerName: 'Title', flex: 2 },
@@ -244,6 +248,8 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
               name='completed'
               label="Completed"
             />
+              {/* Hide ID so that it can be used in the fetch later and passed through the form */}
+
               <input type="hidden" name="id" value={selectedEditRecord.id} />
               </>
           )}
@@ -273,7 +279,8 @@ export const RecordsDataGrid = forwardRef((props, ref) => {
               <DialogContentText>
                 Completed? : {selectedDeleteRecord.completed? "true" : "false"}
               </DialogContentText> 
-                <input type="hidden" name="id" value={selectedDeleteRecord.id} />
+              {/* Hide ID so that it can be used in the fetch later and passed through the form */}
+                <input type="hidden" name="id" value={selectedDeleteRecord.id} /> 
               </>
             )}
             </DialogContent>

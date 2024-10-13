@@ -12,12 +12,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Logo from '../logo.svg'
 import { useNavigate } from 'react-router-dom';
 
-
+//Ability to add more pages and urls
 const pages = ['View Records'];
 const urls = ['/'];
 
 export const Navbar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorNav, setAnchorNav] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
   const handleNavigate = (url : string) => {
@@ -25,14 +25,15 @@ export const Navbar = () => {
   };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorNav(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    setAnchorNav(null);
   };
 
 
+  //Reactive menu which shrinks with window size and creates app draw when on smaller screen sizes
   return (
     <AppBar position="static" sx={{backgroundImage: 'linear-gradient(to right, #327D2E,#6CBB45);' }}>
       <Container maxWidth="xl">
@@ -45,7 +46,7 @@ export const Navbar = () => {
               width: '20%',
               minWidth:'20%'
             }}
-            alt="The house from the offer."
+            alt="SchoolDocsLogo"
             src={Logo}
           />
 
@@ -61,7 +62,7 @@ export const Navbar = () => {
             </IconButton>
             <Menu
               id="menu-appbar"
-              anchorEl={anchorElNav}
+              anchorEl={anchorNav}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
@@ -71,7 +72,7 @@ export const Navbar = () => {
                 vertical: 'top',
                 horizontal: 'left',
               }}
-              open={Boolean(anchorElNav)}
+              open={Boolean(anchorNav)}
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
@@ -89,7 +90,7 @@ export const Navbar = () => {
               mr: 1,
               width: '40%',
             }}
-            alt="The house from the offer."
+            alt="SchoolDocsLogo"
             src={Logo}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

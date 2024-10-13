@@ -69,9 +69,8 @@ export const ViewRecordsPage = () => {
 
         <h1 className='title'>School Records</h1>
 
-
-
         {/* Assign the Ref to the recordsdatagrid object */}
+        {/* Render the DataGrid */}
         <RecordsDataGrid ref={recordsDataGridRef} />
 
         <Box className="CreateButton" display="flex" justifyContent="center" alignItems="center" height="100%" width="100%">
