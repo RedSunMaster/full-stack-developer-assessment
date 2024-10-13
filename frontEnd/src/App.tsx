@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Route, BrowserRouter as Router, Routes} from 'react-router-dom';
-import { Home } from './pages/home'
-import { CreateRecordPage } from './pages/createRecordPage'
 import { ViewRecordsPage } from './pages/viewRecordsPage'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -23,11 +21,7 @@ function App() {
       <Router>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/" element={<Home />}>
-            </Route>
-            <Route path="/records" element={<ViewRecordsPage />}>
-            </Route>
-            <Route path="/create" element={<CreateRecordPage />}>
+            <Route path="/" element={<ViewRecordsPage />}>
             </Route>
           </Routes>
         </ThemeProvider>

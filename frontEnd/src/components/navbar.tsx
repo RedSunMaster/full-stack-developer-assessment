@@ -13,8 +13,8 @@ import Logo from '../logo.svg'
 import { useNavigate } from 'react-router-dom';
 
 
-const pages = ['View Records', 'Create Record'];
-const urls = ['/records', '/create'];
+const pages = ['View Records'];
+const urls = ['/'];
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);

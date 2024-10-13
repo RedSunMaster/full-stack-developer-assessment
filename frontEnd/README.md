@@ -18,7 +18,7 @@ To get started with the frontend application, follow these steps:
    Run the following command to install the required packages:
 
    ```bash
-   npm install
+   npm install --force
    ```
 
 4. **Start the development server**:
